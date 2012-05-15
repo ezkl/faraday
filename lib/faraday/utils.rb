@@ -170,7 +170,11 @@ module Faraday
       end
     end
 
-    def escape(s) CGI.escape s.to_s end
+    def escape(s)
+      s.to_s.gsub(/([^\w.~-]+)/) do
+         '%' + $1.unpack('H2' * $1.bytesize).join('%').upcase
+      end.gsub("%20", "+")
+    end
 
     def unescape(s) CGI.unescape s.to_s end
 
