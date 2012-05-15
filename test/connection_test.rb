@@ -168,6 +168,13 @@ class TestConnection < Faraday::TestCase
     uri = conn.build_url('')
     assert_equal "/nigiri", uri.path
   end
+  
+  
+  def test_build_url_doesnt_encode_tilde
+    conn = Faraday::Connection.new
+    uri = conn.build_url("http://sushi.com/sake.html", 'a' => '1~2')
+    assert_equal "a=1~2", uri.query
+  end
 
   def test_build_url_parses_url_params_into_query
     conn = Faraday::Connection.new
